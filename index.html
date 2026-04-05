@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sunshine Friends | Welcome Home!</title>
+    <style>
+        :root {
+            --sky: #a2d2ff; --grass: #95d5b2; --sun: #fff200;
+            --blood: #d63031; --ink: #2d3436; --tv-gray: #dfe6e9;
+        }
+
+        body {
+            margin: 0; font-family: 'Comic Sans MS', cursive;
+            background-color: var(--tv-gray); color: var(--ink);
+            overflow-x: hidden;
+        }
+
+        /* TV Scanline Overlay */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.05));
+            background-size: 100% 4px, 3px 100%; pointer-events: none; z-index: 10;
+        }
+
+        header {
+            background: var(--sky); padding: 40px; text-align: center;
+            border-bottom: 10px solid var(--grass); position: relative;
+        }
+
+        .mascot-bin {
+            display: flex; justify-content: center; gap: 20px; padding: 20px;
+            background: white; border-bottom: 5px solid var(--sun);
+        }
+
+        .mascot {
+            width: 100px; height: 100px; border-radius: 50%;
+            border: 4px solid var(--ink); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            background: #eee; transition: 0.3s; position: relative;
+        }
+
+        .mascot:hover { transform: scale(1.1) rotate(5deg); background: var(--sun); }
+        .mascot-label { font-size: 0.7rem; font-weight: bold; margin-top: 5px; text-align:center;}
+
+        .location-card {
+            background: white; margin: 20px auto; max-width: 600px;
+            padding: 20px; border-radius: 15px; border: 3px solid var(--ink);
+            box-shadow: 8px 8px 0px var(--grass);
+        }
+
+        .tour-btn {
+            background: var(--blood); color: white; padding: 20px 40px;
+            font-size: 1.5rem; border: 4px solid black; cursor: pointer;
+            box-shadow: 5px 5px 0px #000; font-family: 'Comic Sans MS';
+            margin-bottom: 50px;
+        }
+
+        /* --- New Secret/Glitch Elements --- */
+
+        /* The Secret Button (Looks like a technical error) */
+        .static-box {
+            position: fixed; bottom: 10px; right: 10px;
+            width: 50px; height: 50px; background: white;
+            border: 2px solid black; cursor: pointer; opacity: 0.4;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; text-transform: uppercase;
+        }
+        .static-box:hover { opacity: 1; border-color: red; color: red; }
+
+        /* Fullscreen Revelation Screen */
+        #reveal-screen {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 200; color: #ff0000;
+            flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; font-family: 'Courier New', monospace;
+            padding: 20px; box-sizing: border-box;
+        }
+
+        /* Stylized "Melt" Image */
+        .melt-art {
+            border: 5px solid red; padding: 10px; font-weight: bold;
+            font-size: 1.2rem; line-height: 1.1; margin-bottom: 30px;
+            color: white; background: rgba(255,0,0,0.1);
+        }
+        .melt-art span { color: red; }
+
+        /* --- Endings Screens (Same as before) --- */
+        #ending-screen {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #f0f0f0; z-index: 100; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+        }
+        .poster {
+            width: 350px; padding: 20px; border: 10px solid #333;
+            background: white; box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .poster h1 { color: red; text-decoration: underline; margin-top: 0; }
+        .poster-img { width: 200px; height: 200px; background: #ccc; margin: 10px auto; border: 2px solid #000; display:flex; align-items:center; justify-content:center; }
+        #glitch-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 50; color: white;
+            justify-content: center; align-items: center; font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="scanlines"></div>
+
+<div id="glitch-overlay">
+    <h1 id="glitch-text">RECONNECTING TO CHANNEL 7...</h1>
+</div>
+
+<div id="reveal-screen">
+    <h1 style="color:white;">CLASSIFIED ARCHIVE: FILE 14</h1>
+    <p><em>Access Granted via Corrupted Masking Protocol</em></p>
+    
+    <div class="melt-art">
+        &gt;&gt; LOG 14: THE 'SUNSHINE' TRUTH &lt;&lt;<br><br>
+        1. A NEW LITTLE GIRL CAME TODAY. <span>(THEY ALL COME TODAY.)</span><br>
+        2. THE SUN GOT BRIGHTER. <span>(THE MAYOR LOVES THE SUN.)</span><br>
+        3. WE LURED HER TO THE FOUNTAIN. <span>(STAB.)</span><br>
+        4. THEN, THE MAGIC HAPPENED.<br>
+        5.<span>THE SUNSHINE STARTED THE MELTING.</span><br>
+        6. THE HUMANS ARE JUST INK. WE NEED INK.<br>
+        7. <span>JENNA IS THE INK FOR NEXT SEASON.</span>
+    </div>
+
+    <p>This is what the "Sunshine" actually does, Jenna.<br>
+    Stop clicking. Stop trying to find codes. It's too late.</p>
+    <br>
+    <button onclick="document.getElementById('reveal-screen').style.display='none';" style="cursor:pointer; color:red; background:none; border:1px solid red; font-family: monospace;">CLOSE ARCHIVE</button>
+</div>
+
+<div id="ending-screen">
+    <div class="poster">
+        <h1>MISSING</h1>
+        <div class="poster-img"><span id="poster-icon" style="font-size:80px"></span></div>
+        <h2 id="missing-name">JENNA DOE</h2>
+        <p id="missing-desc"></p>
+        <p style="font-weight:bold">IF SEEN, DO NOT APPROACH. SHE IS PART OF THE SHOW NOW.</p>
+    </div>
+    <button onclick="location.reload()" style="margin-top:20px; cursor:pointer;">REWATCH EPISODE</button>
+</div>
+
+<header>
+    <h1>The Sunshine Friends!</h1>
+    <p><em>Broadcasted by The Channel 7 Cult — Since 1994</em></p>
+</header>
+
+<div class="mascot-bin">
+    <div onclick="mascotTalk('Sunny', 'I love the Sun! It burned my eyes away!')">
+        <div class="mascot">☀️</div>
+        <div class="mascot-label">SUNNY (LEADER)</div>
+    </div>
+    <div onclick="mascotTalk('Barnaby', 'The fountain was so cold... help me.')">
+        <div class="mascot">🐶</div>
+        <div class="mascot-label">BARNABY (1998)</div>
+    </div>
+    <div onclick="mascotTalk('Giggles', 'The party never ends if you never wake up!')">
+        <div class="mascot">🤡</div>
+        <div class="mascot-label">GIGGLES (2005)</div>
+    </div>
+</div>
+
+<div style="text-align:center; padding: 20px;">
+    <div class="location-card">
+        <h3>Today's Episode: The Overnight Guest!</h3>
+        <p>We have a brand new friend joining the cast today! Her name is <strong>Jenna</strong>. She thinks she's here for a sleepover, but she's actually our Grand Finale!</p>
+    </div>
+
+    <div class="location-card" style="border-color: var(--warning);">
+        <h3>⚠️ CASTING UPDATE: MASCOT CODE #04</h3>
+        <p>A previous cast member is missing. Hint: Check the Whispering Woods, but do not click the 'Play' button. We must maintain proper ritual sequence! <span style="font-size:10px; color:#ccc;">(This is a lie.)</span></p>
+    </div>
+
+    <div class="location-card">
+        <h3>The "Cherry" Fountain</h3>
+        <p>The Mayor says the fountain is the heart of Sunnybrook. If you fall in, you become the ink for our animation cells! Isn't learning fun?</p>
+    </div>
+
+    <button class="tour-btn" onclick="triggerGlitch()">START CHANNEL 7 TOUR</button>
+</div>
+
+<div class="static-box" onclick="showRevelation()">[ERROR]</div>
+
+<script>
+    // Audio Context (Fake creepy music box)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playCreepyNote(freq, time) {
+        if (audioCtx.state === 'suspended') { audioCtx.resume(); } // Needed to allow sound on modern browsers
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + time);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + time);
+    }
+
+    function mascotTalk(name, line) {
+        playCreepyNote(200, 1);
+        alert(name + " says: " + line);
+    }
+
+    // The Secret Revelation Logic
+    function showRevelation() {
+        playCreepyNote(100, 2);
+        document.getElementById('reveal-screen').style.display = 'flex';
+    }
+
+    function triggerGlitch() {
+        if (audioCtx.state === 'suspended') { audioCtx.resume(); } // Final context check
+        const overlay = document.getElementById('glitch-overlay');
+        const text = document.getElementById('glitch-text');
+        overlay.style.display = 'flex';
+        
+        setTimeout(() => { text.innerText = "SACRIFICE DETECTED..."; playCreepyNote(150, 0.5); }, 1000);
+        setTimeout(() => { text.innerText = "UPDATING CAST LIST..."; playCreepyNote(100, 0.5); }, 2500);
+        setTimeout(() => { showPoster(); }, 4000);
+    }
+
+    function showPoster() {
+        document.getElementById('glitch-overlay').style.display = 'none';
+        document.getElementById('ending-screen').style.display = 'flex';
+        
+        const outcomes = [
+            { name: "JENNA (THE LIQUID)", desc: "Last seen at the fountain. Now used to lubricate the Channel 7 broadcast machines.", icon: "💧" },
+            { name: "JENNA (THE VOICE)", desc: "Last seen in the woods. Her screams were recorded and used as the show's theme song.", icon: "🍃" },
+            { name: "JENNA (THE PROP)", desc: "Last seen at school. Her skin was used to upholster the Mayor's favorite chair.", icon: "🪑" }
+        ];
+        
+        const random = outcomes[Math.floor(Math.random() * outcomes.length)];
+        document.getElementById('missing-name').innerText = random.name;
+        document.getElementById('missing-desc').innerText = random.desc;
+        document.getElementById('poster-icon').innerText = random.icon;
+    }
+
+    // No Escape Back Button
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+        window.history.go(1);
+        alert("The Mayor: 'Channel 7 doesn't have a back button, Jenna.'");
+    };
+</script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Channel 7: The Sunshine Friends Archive</title>
+    <style>
+        :root {
+            --sky: #a2d2ff; --grass: #95d5b2; --sun: #fff200;
+            --blood: #d63031; --ink: #2d3436; --terminal: #1e1e1e;
+        }
+
+        body {
+            margin: 0; font-family: 'Comic Sans MS', cursive;
+            background-color: #eee; color: var(--ink);
+            overflow-x: hidden;
+        }
+
+        /* TV Scanlines */
+        .crt {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 4px; pointer-events: none; z-index: 1000;
+        }
+
+        /* Character Bar */
+        .character-strip {
+            display: flex; justify-content: center; gap: 30px;
+            padding: 20px; background: white; border-bottom: 5px solid var(--sun);
+        }
+
+        .char-node {
+            text-align: center; cursor: pointer; transition: 0.3s;
+            position: relative;
+        }
+        .char-node:hover { transform: translateY(-10px); }
+        .char-icon { font-size: 60px; border: 4px solid var(--ink); border-radius: 50%; padding: 10px; background: #fff; }
+        
+        /* Speech & Invites */
+        #speech-box {
+            max-width: 600px; margin: 20px auto; background: white;
+            border: 3px solid var(--ink); padding: 15px; border-radius: 15px;
+            display: none; text-align: center; box-shadow: 5px 5px 0px var(--sky);
+        }
+
+        .invite-link {
+            display: none; color: var(--blood); font-weight: bold;
+            text-decoration: underline; cursor: pointer; margin-top: 10px;
+        }
+
+        /* Secret Overlay Styles */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 2000; display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            color: #ff3e3e; font-family: monospace; padding: 20px; text-align: center;
+        }
+
+        .melt-sun {
+            width: 150px; height: 150px; background: var(--sun);
+            border-radius: 50%; box-shadow: 0 0 80px red;
+            position: relative; margin: 20px;
+        }
+        .drip {
+            position: absolute; width: 15px; background: var(--sun);
+            bottom: -20px; border-radius: 10px; animation: drip-anim 1.5s infinite;
+        }
+
+        @keyframes drip-anim { 0% {height:0;} 100% {height:100px; opacity:0;} }
+
+        header { background: var(--sky); padding: 20px; text-align: center; border-bottom: 8px solid var(--grass); }
+        .footer-logs { font-size: 10px; color: #999; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="crt"></div>
+
+<header>
+    <h1>The Sunshine Friends!</h1>
+    <p><em>"A Happy Home for Every Forgotten Child"</em></p>
+</header>
+
+<div class="character-strip">
+    <div class="char-node" onclick="talk('sunny')">
+        <div class="char-icon">☀️</div>
+        <p>SUNNY</p>
+        <div id="sunny-invite" class="invite-link" onclick="openSecret('sunny')">VIEW RITUAL</div>
+    </div>
+    <div class="char-node" onclick="talk('barnaby')">
+        <div class="char-icon">🐶</div>
+        <p>BARNABY</p>
+        <div id="barnaby-invite" class="invite-link" onclick="openSecret('barnaby')">VIEW WELL_FILE</div>
+    </div>
+    <div class="char-node" onclick="talk('giggles')">
+        <div class="char-icon">🤡</div>
+        <p>GIGGLES</p>
+        <div id="giggles-invite" class="invite-link" onclick="openSecret('giggles')">VIEW BOILER_ROOM</div>
+    </div>
+</div>
+
+<div id="speech-box"></div>
+
+<div id="overlay">
+    <div id="overlay-content"></div>
+    <br>
+    <button onclick="closeSecret()" style="background:none; border:1px solid red; color:red; cursor:pointer;">BACK TO THE SHOW</button>
+</div>
+
+<div style="max-width:800px; margin:auto; padding:20px;">
+    <div style="background:white; border:3px solid black; padding:20px; border-radius:10px;">
+        <h3>Welcome, Jenna!</h3>
+        <p>The Mayor is so happy you're here. We were running low on <strong>Background Volunteers</strong>. Did you know most of our cast was donated by their very own parents? It's true! For a small fee, we take the "trouble" off their hands and turn it into <strong>Magic!</strong></p>
+    </div>
+</div>
+
+<div class="footer-logs">
+    ARCHIVE STATUS: <span id="log-count">0</span>/3 FILES RECOVERED<br>
+    PROMOTED BY CHANNEL 7 BROADCASTING
+</div>
+
+<script>
+    const box = document.getElementById('speech-box');
+    const logs = document.getElementById('log-count');
+    let recovered = new Set();
+
+    const scripts = {
+        sunny: [
+            "I'm the leader! I make sure the Sun stays bright for everyone!",
+            "Did you know? My parents said I was 'too bright' for a normal life.",
+            "So they gave me to the Mayor! Now I help the others... melt into place.",
+            "Want to see what happens when the Sun gets hungry?"
+        ],
+        barnaby: [
+            "Woof! I'm Barnaby! I used to be a boy named Sam.",
+            "The party at the well was so much fun... until the lid closed.",
+            "But look at me now! I'm soft, I'm fluffy, and I'll never be lonely again!",
+            "Check my collar... I think there's a note for you."
+        ],
+        giggles: [
+            "Hee-hee! Ready for a game? My name is Giggles!",
+            "I played hide-and-seek in the school basement with the big metal pipes.",
+            "It got so hot... my skin felt like it was sliding off like a costume!",
+            "The Mayor said my screams were the funniest thing he'd ever heard!"
+        ]
+    };
+
+    let counts = { sunny: 0, barnaby: 0, giggles: 0 };
+
+    function talk(who) {
+        box.style.display = 'block';
+        box.innerText = scripts[who][counts[who]];
+        
+        if (counts[who] === scripts[who].length - 1) {
+            document.getElementById(who + '-invite').style.display = 'block';
+        }
+        
+        counts[who] = (counts[who] + 1) % scripts[who].length;
+    }
+
+    function openSecret(who) {
+        const overlay = document.getElementById('overlay');
+        const content = document.getElementById('overlay-content');
+        overlay.style.display = 'flex';
+        recovered.add(who);
+        logs.innerText = recovered.size;
+
+        if (who === 'sunny') {
+            content.innerHTML = `
+                <h1>THE MELTING RITUAL</h1>
+                <div class="melt-sun"><div class="drip" style="left:40px"></div><div class="drip" style="left:90px; animation-delay:0.7s"></div></div>
+                <p>The Sunshine is actually a high-frequency radiation used to liquefy genetic material.</p>
+                <p>The "Mascots" are just hollow shells filled with the "Ink" of the children who came before.</p>
+                <p style="color:white">Jenna, your skin is next. The Mayor needs a fresh coat of paint.</p>
+            `;
+        } else if (who === 'barnaby') {
+            content.innerHTML = `
+                <h1>FILE: WELL_INCIDENT_1998</h1>
+                <p style="color:white">[GRAINY FOOTAGE OF A WELL]</p>
+                <p>"SAM, STOP CRYING. THE MAYOR SAYS THIS IS FOR YOUR OWN GOOD."</p>
+                <p>"PLEASE, MOM! IT'S DARK! I DON'T WANT TO BE A DOG!"</p>
+                <p>[SOUND OF HEAVY STONE SLIDING INTO PLACE]</p>
+            `;
+        } else if (who === 'giggles') {
+            content.innerHTML = `
+                <h1>FILE: BOILER_ROOM_2005</h1>
+                <p>Maya was "Volunteered" by her father after she wouldn't stop crying.</p>
+                <p>She was locked in the 120-degree boiler room to "dry out" her personality.</p>
+                <p>The resulting laughter was synthesized into the Channel 7 audio loop.</p>
+                <p style="color:white">Listen closely to the background music... that's Maya.</p>
+            `;
+        }
+    }
+
+    function closeSecret() {
+        document.getElementById('overlay').style.display = 'none';
+        if (recovered.size === 3) {
+            alert("ALL FILES RECOVERED. WELCOME TO THE CAST, JENNA. THE TOUR IS NOW PERMANENT.");
+        }
+    }
+</script>
+
+</body>
+</html>
+</body>
+</html>
