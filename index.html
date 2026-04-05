@@ -3,451 +3,524 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Sunshine Friends | Welcome Home!</title>
-    <style>
-        :root {
-            --sky: #a2d2ff; --grass: #95d5b2; --sun: #fff200;
-            --blood: #d63031; --ink: #2d3436; --tv-gray: #dfe6e9;
-        }
-
-        body {
-            margin: 0; font-family: 'Comic Sans MS', cursive;
-            background-color: var(--tv-gray); color: var(--ink);
-            overflow-x: hidden;
-        }
-
-        /* TV Scanline Overlay */
-        .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.05));
-            background-size: 100% 4px, 3px 100%; pointer-events: none; z-index: 10;
-        }
-
-        header {
-            background: var(--sky); padding: 40px; text-align: center;
-            border-bottom: 10px solid var(--grass); position: relative;
-        }
-
-        .mascot-bin {
-            display: flex; justify-content: center; gap: 20px; padding: 20px;
-            background: white; border-bottom: 5px solid var(--sun);
-        }
-
-        .mascot {
-            width: 100px; height: 100px; border-radius: 50%;
-            border: 4px solid var(--ink); cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            background: #eee; transition: 0.3s; position: relative;
-        }
-
-        .mascot:hover { transform: scale(1.1) rotate(5deg); background: var(--sun); }
-        .mascot-label { font-size: 0.7rem; font-weight: bold; margin-top: 5px; text-align:center;}
-
-        .location-card {
-            background: white; margin: 20px auto; max-width: 600px;
-            padding: 20px; border-radius: 15px; border: 3px solid var(--ink);
-            box-shadow: 8px 8px 0px var(--grass);
-        }
-
-        .tour-btn {
-            background: var(--blood); color: white; padding: 20px 40px;
-            font-size: 1.5rem; border: 4px solid black; cursor: pointer;
-            box-shadow: 5px 5px 0px #000; font-family: 'Comic Sans MS';
-            margin-bottom: 50px;
-        }
-
-        /* --- New Secret/Glitch Elements --- */
-
-        /* The Secret Button (Looks like a technical error) */
-        .static-box {
-            position: fixed; bottom: 10px; right: 10px;
-            width: 50px; height: 50px; background: white;
-            border: 2px solid black; cursor: pointer; opacity: 0.4;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 10px; text-transform: uppercase;
-        }
-        .static-box:hover { opacity: 1; border-color: red; color: red; }
-
-        /* Fullscreen Revelation Screen */
-        #reveal-screen {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 200; color: #ff0000;
-            flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; font-family: 'Courier New', monospace;
-            padding: 20px; box-sizing: border-box;
-        }
-
-        /* Stylized "Melt" Image */
-        .melt-art {
-            border: 5px solid red; padding: 10px; font-weight: bold;
-            font-size: 1.2rem; line-height: 1.1; margin-bottom: 30px;
-            color: white; background: rgba(255,0,0,0.1);
-        }
-        .melt-art span { color: red; }
-
-        /* --- Endings Screens (Same as before) --- */
-        #ending-screen {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #f0f0f0; z-index: 100; flex-direction: column;
-            align-items: center; justify-content: center; text-align: center;
-        }
-        .poster {
-            width: 350px; padding: 20px; border: 10px solid #333;
-            background: white; box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            font-family: 'Courier New', Courier, monospace;
-        }
-        .poster h1 { color: red; text-decoration: underline; margin-top: 0; }
-        .poster-img { width: 200px; height: 200px; background: #ccc; margin: 10px auto; border: 2px solid #000; display:flex; align-items:center; justify-content:center; }
-        #glitch-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 50; color: white;
-            justify-content: center; align-items: center; font-family: monospace;
-        }
-    </style>
-</head>
-<body>
-
-<div class="scanlines"></div>
-
-<div id="glitch-overlay">
-    <h1 id="glitch-text">RECONNECTING TO CHANNEL 7...</h1>
-</div>
-
-<div id="reveal-screen">
-    <h1 style="color:white;">CLASSIFIED ARCHIVE: FILE 14</h1>
-    <p><em>Access Granted via Corrupted Masking Protocol</em></p>
-    
-    <div class="melt-art">
-        &gt;&gt; LOG 14: THE 'SUNSHINE' TRUTH &lt;&lt;<br><br>
-        1. A NEW LITTLE GIRL CAME TODAY. <span>(THEY ALL COME TODAY.)</span><br>
-        2. THE SUN GOT BRIGHTER. <span>(THE MAYOR LOVES THE SUN.)</span><br>
-        3. WE LURED HER TO THE FOUNTAIN. <span>(STAB.)</span><br>
-        4. THEN, THE MAGIC HAPPENED.<br>
-        5.<span>THE SUNSHINE STARTED THE MELTING.</span><br>
-        6. THE HUMANS ARE JUST INK. WE NEED INK.<br>
-        7. <span>JENNA IS THE INK FOR NEXT SEASON.</span>
-    </div>
-
-    <p>This is what the "Sunshine" actually does, Jenna.<br>
-    Stop clicking. Stop trying to find codes. It's too late.</p>
-    <br>
-    <button onclick="document.getElementById('reveal-screen').style.display='none';" style="cursor:pointer; color:red; background:none; border:1px solid red; font-family: monospace;">CLOSE ARCHIVE</button>
-</div>
-
-<div id="ending-screen">
-    <div class="poster">
-        <h1>MISSING</h1>
-        <div class="poster-img"><span id="poster-icon" style="font-size:80px"></span></div>
-        <h2 id="missing-name">JENNA DOE</h2>
-        <p id="missing-desc"></p>
-        <p style="font-weight:bold">IF SEEN, DO NOT APPROACH. SHE IS PART OF THE SHOW NOW.</p>
-    </div>
-    <button onclick="location.reload()" style="margin-top:20px; cursor:pointer;">REWATCH EPISODE</button>
-</div>
-
-<header>
-    <h1>The Sunshine Friends!</h1>
-    <p><em>Broadcasted by The Channel 7 Cult — Since 1994</em></p>
-</header>
-
-<div class="mascot-bin">
-    <div onclick="mascotTalk('Sunny', 'I love the Sun! It burned my eyes away!')">
-        <div class="mascot">☀️</div>
-        <div class="mascot-label">SUNNY (LEADER)</div>
-    </div>
-    <div onclick="mascotTalk('Barnaby', 'The fountain was so cold... help me.')">
-        <div class="mascot">🐶</div>
-        <div class="mascot-label">BARNABY (1998)</div>
-    </div>
-    <div onclick="mascotTalk('Giggles', 'The party never ends if you never wake up!')">
-        <div class="mascot">🤡</div>
-        <div class="mascot-label">GIGGLES (2005)</div>
-    </div>
-</div>
-
-<div style="text-align:center; padding: 20px;">
-    <div class="location-card">
-        <h3>Today's Episode: The Overnight Guest!</h3>
-        <p>We have a brand new friend joining the cast today! Her name is <strong>Jenna</strong>. She thinks she's here for a sleepover, but she's actually our Grand Finale!</p>
-    </div>
-
-    <div class="location-card" style="border-color: var(--warning);">
-        <h3>⚠️ CASTING UPDATE: MASCOT CODE #04</h3>
-        <p>A previous cast member is missing. Hint: Check the Whispering Woods, but do not click the 'Play' button. We must maintain proper ritual sequence! <span style="font-size:10px; color:#ccc;">(This is a lie.)</span></p>
-    </div>
-
-    <div class="location-card">
-        <h3>The "Cherry" Fountain</h3>
-        <p>The Mayor says the fountain is the heart of Sunnybrook. If you fall in, you become the ink for our animation cells! Isn't learning fun?</p>
-    </div>
-
-    <button class="tour-btn" onclick="triggerGlitch()">START CHANNEL 7 TOUR</button>
-</div>
-
-<div class="static-box" onclick="showRevelation()">[ERROR]</div>
-
-<script>
-    // Audio Context (Fake creepy music box)
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playCreepyNote(freq, time) {
-        if (audioCtx.state === 'suspended') { audioCtx.resume(); } // Needed to allow sound on modern browsers
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + time);
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.start(); osc.stop(audioCtx.currentTime + time);
-    }
-
-    function mascotTalk(name, line) {
-        playCreepyNote(200, 1);
-        alert(name + " says: " + line);
-    }
-
-    // The Secret Revelation Logic
-    function showRevelation() {
-        playCreepyNote(100, 2);
-        document.getElementById('reveal-screen').style.display = 'flex';
-    }
-
-    function triggerGlitch() {
-        if (audioCtx.state === 'suspended') { audioCtx.resume(); } // Final context check
-        const overlay = document.getElementById('glitch-overlay');
-        const text = document.getElementById('glitch-text');
-        overlay.style.display = 'flex';
-        
-        setTimeout(() => { text.innerText = "SACRIFICE DETECTED..."; playCreepyNote(150, 0.5); }, 1000);
-        setTimeout(() => { text.innerText = "UPDATING CAST LIST..."; playCreepyNote(100, 0.5); }, 2500);
-        setTimeout(() => { showPoster(); }, 4000);
-    }
-
-    function showPoster() {
-        document.getElementById('glitch-overlay').style.display = 'none';
-        document.getElementById('ending-screen').style.display = 'flex';
-        
-        const outcomes = [
-            { name: "JENNA (THE LIQUID)", desc: "Last seen at the fountain. Now used to lubricate the Channel 7 broadcast machines.", icon: "💧" },
-            { name: "JENNA (THE VOICE)", desc: "Last seen in the woods. Her screams were recorded and used as the show's theme song.", icon: "🍃" },
-            { name: "JENNA (THE PROP)", desc: "Last seen at school. Her skin was used to upholster the Mayor's favorite chair.", icon: "🪑" }
-        ];
-        
-        const random = outcomes[Math.floor(Math.random() * outcomes.length)];
-        document.getElementById('missing-name').innerText = random.name;
-        document.getElementById('missing-desc').innerText = random.desc;
-        document.getElementById('poster-icon').innerText = random.icon;
-    }
-
-    // No Escape Back Button
-    window.history.pushState(null, null, window.location.href);
-    window.onpopstate = function () {
-        window.history.go(1);
-        alert("The Mayor: 'Channel 7 doesn't have a back button, Jenna.'");
-    };
-</script>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Channel 7: The Sunshine Friends Archive</title>
     <style>
+        /* * ==========================================
+         * THE SUNSHINE FRIENDS - EXTENDED EDITION
+         * Original Concept by an awesome 11-year-old
+         * Expanded Lore & Mechanics 
+         * ==========================================
+         */
+
         :root {
             --sky: #a2d2ff; --grass: #95d5b2; --sun: #fff200;
-            --blood: #d63031; --ink: #2d3436; --terminal: #1e1e1e;
+            --blood: #d63031; --ink: #111; --terminal: #0a0a0a;
+            --crt-blue: rgba(0, 255, 255, 0.1);
+            --crt-red: rgba(255, 0, 0, 0.1);
         }
 
         body {
-            margin: 0; font-family: 'Comic Sans MS', cursive;
-            background-color: #eee; color: var(--ink);
-            overflow-x: hidden;
+            margin: 0; 
+            font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+            background-color: #222; 
+            color: var(--ink);
+            overflow: hidden; /* Prevent scrolling for immersive feel */
+            user-select: none;
         }
 
-        /* TV Scanlines */
-        .crt {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
-            background-size: 100% 4px; pointer-events: none; z-index: 1000;
+        /* --- IMMERSIVE CRT TV EFFECTS --- */
+        .crt-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
+                        linear-gradient(90deg, var(--crt-red), rgba(0,255,0,0.02), var(--crt-blue));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none; z-index: 9999;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.9); /* Vignette */
+            animation: flicker 0.15s infinite;
         }
 
-        /* Character Bar */
+        @keyframes flicker {
+            0% { opacity: 0.95; }
+            50% { opacity: 0.85; }
+            100% { opacity: 0.95; }
+        }
+
+        /* Chromatic Aberration Class (Red/Blue split) */
+        .glitch-text {
+            text-shadow: 2px 0px 1px red, -2px 0px 1px blue;
+        }
+
+        /* --- START SCREEN --- */
+        #start-screen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: black; color: white; z-index: 10000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-family: 'Courier New', monospace; cursor: pointer;
+        }
+        
+        .tv-button {
+            padding: 20px 40px; background: transparent; border: 2px solid white;
+            color: white; font-size: 24px; cursor: pointer; text-transform: uppercase;
+            transition: all 0.3s; font-family: inherit;
+        }
+        .tv-button:hover { background: white; color: black; box-shadow: 0 0 20px white; }
+
+        /* --- GAME CONTAINER --- */
+        #game-container {
+            width: 100vw; height: 100vh; overflow-y: auto; overflow-x: hidden;
+            background-color: #eee;
+            display: none; /* Hidden until TV is turned on */
+            flex-direction: column;
+        }
+
+        /* --- HAPPY FRONT-END UI --- */
+        header { 
+            background: var(--sky); padding: 20px; text-align: center; 
+            border-bottom: 8px solid var(--grass); 
+            transition: background 1s, border-color 1s;
+        }
+
         .character-strip {
-            display: flex; justify-content: center; gap: 30px;
-            padding: 20px; background: white; border-bottom: 5px solid var(--sun);
+            display: flex; justify-content: center; gap: 5vw; flex-wrap: wrap;
+            padding: 30px; background: white; border-bottom: 5px solid var(--sun);
         }
 
         .char-node {
             text-align: center; cursor: pointer; transition: 0.3s;
-            position: relative;
+            position: relative; width: 120px;
         }
-        .char-node:hover { transform: translateY(-10px); }
-        .char-icon { font-size: 60px; border: 4px solid var(--ink); border-radius: 50%; padding: 10px; background: #fff; }
-        
-        /* Speech & Invites */
+        .char-node:hover { transform: translateY(-10px) scale(1.05); }
+        .char-icon { 
+            font-size: 60px; border: 5px solid var(--ink); border-radius: 50%; 
+            width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto; background: #fff; box-shadow: 4px 4px 0px #ccc;
+        }
+
+        /* Dialogue Box */
         #speech-box {
-            max-width: 600px; margin: 20px auto; background: white;
-            border: 3px solid var(--ink); padding: 15px; border-radius: 15px;
-            display: none; text-align: center; box-shadow: 5px 5px 0px var(--sky);
+            max-width: 600px; width: 90%; margin: 30px auto; background: white;
+            border: 4px solid var(--ink); padding: 20px; border-radius: 15px;
+            text-align: center; box-shadow: 8px 8px 0px var(--sky);
+            font-size: 1.2rem; min-height: 80px; display: flex;
+            align-items: center; justify-content: center; font-weight: bold;
         }
 
-        .invite-link {
-            display: none; color: var(--blood); font-weight: bold;
-            text-decoration: underline; cursor: pointer; margin-top: 10px;
+        .invite-btn {
+            display: none; background: var(--blood); color: white;
+            border: 3px solid black; padding: 10px 20px; margin-top: 15px;
+            cursor: pointer; font-family: 'Courier New', monospace; font-weight: bold;
+            box-shadow: 3px 3px 0px black; text-transform: uppercase;
         }
+        .invite-btn:hover { background: black; color: red; }
 
-        /* Secret Overlay Styles */
-        #overlay {
+        /* --- SECRET CORRUPTED FILES OVERLAY --- */
+        #secret-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 2000; display: none;
+            background: rgba(0,0,0,0.95); z-index: 2000; display: none;
             flex-direction: column; align-items: center; justify-content: center;
-            color: #ff3e3e; font-family: monospace; padding: 20px; text-align: center;
+            color: white; font-family: 'Courier New', monospace; padding: 20px; text-align: center;
         }
 
-        .melt-sun {
-            width: 150px; height: 150px; background: var(--sun);
-            border-radius: 50%; box-shadow: 0 0 80px red;
-            position: relative; margin: 20px;
+        .melt-art {
+            border: 2px dashed red; padding: 20px; background: rgba(255,0,0,0.1);
+            max-width: 600px; margin-bottom: 20px; text-align: left;
         }
+
+        /* --- THE MAYOR'S TERMINAL (PHASE 2) --- */
+        #terminal-phase {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: var(--terminal); color: #0f0; z-index: 5000;
+            display: none; flex-direction: column; font-family: 'Courier New', monospace;
+            padding: 40px; box-sizing: border-box;
+        }
+        
+        .terminal-output { flex-grow: 1; overflow-y: auto; margin-bottom: 20px; font-size: 1.2rem;}
+        .terminal-line { margin-bottom: 10px; opacity: 0; animation: fadeIn 0.1s forwards; }
+        .terminal-red { color: red; text-shadow: 0 0 5px red; }
+        
+        .terminal-choices { display: flex; gap: 20px; justify-content: center; margin-top: 30px;}
+        .term-btn {
+            background: transparent; border: 2px solid #0f0; color: #0f0;
+            padding: 15px 30px; font-family: inherit; font-size: 1.2rem;
+            cursor: pointer; transition: 0.2s;
+        }
+        .term-btn:hover { background: #0f0; color: black; }
+        .term-btn.danger { border-color: red; color: red; }
+        .term-btn.danger:hover { background: red; color: white; }
+
+        /* --- ENDING SCREENS --- */
+        #ending-screen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #fff; z-index: 8000; display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        .poster {
+            border: 15px solid #111; padding: 40px; text-align: center;
+            background: #f9f9f9; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            max-width: 400px; width: 90%; transform: rotate(-2deg);
+        }
+        .poster h1 { font-size: 4rem; margin: 0; color: var(--blood); letter-spacing: 5px; }
+        .poster-img { font-size: 100px; margin: 20px 0; filter: grayscale(100%) contrast(200%); }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* Blood Drip Animation */
+        .drip-container { position: relative; width: 100%; height: 20px; }
         .drip {
-            position: absolute; width: 15px; background: var(--sun);
-            bottom: -20px; border-radius: 10px; animation: drip-anim 1.5s infinite;
+            position: absolute; width: 5px; background: red; top: 0;
+            border-radius: 0 0 5px 5px; animation: drop 2s infinite ease-in;
         }
+        @keyframes drop { 0% {height: 0; opacity: 1;} 80% {height: 100px; opacity: 1;} 100% {height: 100px; opacity: 0;} }
 
-        @keyframes drip-anim { 0% {height:0;} 100% {height:100px; opacity:0;} }
-
-        header { background: var(--sky); padding: 20px; text-align: center; border-bottom: 8px solid var(--grass); }
-        .footer-logs { font-size: 10px; color: #999; padding: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
-<div class="crt"></div>
+    <!-- CRT Overlay always on top -->
+    <div class="crt-overlay"></div>
 
-<header>
-    <h1>The Sunshine Friends!</h1>
-    <p><em>"A Happy Home for Every Forgotten Child"</em></p>
-</header>
-
-<div class="character-strip">
-    <div class="char-node" onclick="talk('sunny')">
-        <div class="char-icon">☀️</div>
-        <p>SUNNY</p>
-        <div id="sunny-invite" class="invite-link" onclick="openSecret('sunny')">VIEW RITUAL</div>
+    <!-- START SCREEN (Requires user interaction to start audio context) -->
+    <div id="start-screen">
+        <h2 style="margin-bottom: 30px; letter-spacing: 5px;">PROPERTY OF CHANNEL 7</h2>
+        <button class="tv-button" onclick="powerOn()">Turn On TV</button>
+        <p style="margin-top: 50px; font-size: 12px; color: #555;">Warning: Broadcast may contain cognitive hazards.</p>
     </div>
-    <div class="char-node" onclick="talk('barnaby')">
-        <div class="char-icon">🐶</div>
-        <p>BARNABY</p>
-        <div id="barnaby-invite" class="invite-link" onclick="openSecret('barnaby')">VIEW WELL_FILE</div>
+
+    <!-- PHASE 1: THE HAPPY WEBSITE -->
+    <div id="game-container">
+        <header id="main-header">
+            <h1 id="header-title">The Sunshine Friends!</h1>
+            <p><em>"A Happy Home for Every Forgotten Child"</em></p>
+        </header>
+
+        <div class="character-strip" id="char-strip">
+            <div class="char-node" onclick="talk('sunny')">
+                <div class="char-icon" id="icon-sunny">☀️</div>
+                <p>SUNNY</p>
+                <button id="sunny-invite" class="invite-btn" onclick="openSecret('sunny', event)">VIEW_LOG.TXT</button>
+            </div>
+            <div class="char-node" onclick="talk('barnaby')">
+                <div class="char-icon" id="icon-barnaby">🐶</div>
+                <p>BARNABY</p>
+                <button id="barnaby-invite" class="invite-btn" onclick="openSecret('barnaby', event)">ACCESS_WELL</button>
+            </div>
+            <div class="char-node" onclick="talk('giggles')">
+                <div class="char-icon" id="icon-giggles">🤡</div>
+                <p>GIGGLES</p>
+                <button id="giggles-invite" class="invite-btn" onclick="openSecret('giggles', event)">BOILER_CTRL</button>
+            </div>
+        </div>
+
+        <div id="speech-box">
+            Click a friend to say hello, Jenna!
+        </div>
+
+        <div style="max-width:800px; margin: 20px auto; padding:20px; font-family: 'Courier New', monospace;">
+            <div style="background:white; border:3px solid black; padding:20px; border-radius:10px; box-shadow: 4px 4px 0px #ccc;">
+                <h3 style="margin-top:0;">Welcome to the studio, Jenna!</h3>
+                <p>The Mayor is so happy you're here. We were running low on <strong>Background Volunteers</strong>. Did you know most of our cast was donated by their very own parents? It's true! For a small fee, we take the "trouble" off their hands and turn it into <strong>Magic!</strong></p>
+                <p style="font-size: 10px; color: #888;">(Do not look at the cameras. Do not approach the fountain. Smile.)</p>
+            </div>
+        </div>
     </div>
-    <div class="char-node" onclick="talk('giggles')">
-        <div class="char-icon">🤡</div>
-        <p>GIGGLES</p>
-        <div id="giggles-invite" class="invite-link" onclick="openSecret('giggles')">VIEW BOILER_ROOM</div>
+
+    <!-- OVERLAY FOR SECRET LORE REVEALS -->
+    <div id="secret-overlay">
+        <div id="secret-content" class="melt-art"></div>
+        <button onclick="closeSecret()" class="invite-btn" style="display:block; border-color:white; color:white;">RETURN TO BROADCAST</button>
     </div>
-</div>
 
-<div id="speech-box"></div>
-
-<div id="overlay">
-    <div id="overlay-content"></div>
-    <br>
-    <button onclick="closeSecret()" style="background:none; border:1px solid red; color:red; cursor:pointer;">BACK TO THE SHOW</button>
-</div>
-
-<div style="max-width:800px; margin:auto; padding:20px;">
-    <div style="background:white; border:3px solid black; padding:20px; border-radius:10px;">
-        <h3>Welcome, Jenna!</h3>
-        <p>The Mayor is so happy you're here. We were running low on <strong>Background Volunteers</strong>. Did you know most of our cast was donated by their very own parents? It's true! For a small fee, we take the "trouble" off their hands and turn it into <strong>Magic!</strong></p>
+    <!-- PHASE 2: THE MAYOR'S TERMINAL -->
+    <div id="terminal-phase">
+        <div class="terminal-output" id="term-out"></div>
+        <div class="terminal-choices" id="term-choices" style="display:none;">
+            <button class="term-btn danger" onclick="triggerEnding('assimilate')">[ ACCEPT YOUR ROLE ]</button>
+            <button class="term-btn" onclick="triggerEnding('escape')">[ INITIATE STUDIO SHUTDOWN ]</button>
+        </div>
     </div>
-</div>
 
-<div class="footer-logs">
-    ARCHIVE STATUS: <span id="log-count">0</span>/3 FILES RECOVERED<br>
-    PROMOTED BY CHANNEL 7 BROADCASTING
-</div>
+    <!-- PHASE 3: THE MISSING POSTER ENDING -->
+    <div id="ending-screen">
+        <div class="poster">
+            <h1 class="glitch-text">MISSING</h1>
+            <div class="poster-img" id="ending-icon"></div>
+            <h2 id="ending-name" style="font-size: 24px; margin-bottom: 5px;">JENNA DOE</h2>
+            <p id="ending-desc" style="font-size: 14px; font-weight: bold;"></p>
+            <hr style="border: 2px solid black; margin: 20px 0;">
+            <p style="font-size: 12px;">IF SEEN, DO NOT APPROACH.<br>SHE IS PART OF THE SHOW NOW.</p>
+        </div>
+    </div>
 
-<script>
-    const box = document.getElementById('speech-box');
-    const logs = document.getElementById('log-count');
-    let recovered = new Set();
+    <!-- AUDIO & LOGIC SCRIPT -->
+    <script>
+        // --- AUDIO ENGINE (Expanded Web Audio API) ---
+        let audioCtx;
+        let droneOsc, droneGain;
 
-    const scripts = {
-        sunny: [
-            "I'm the leader! I make sure the Sun stays bright for everyone!",
-            "Did you know? My parents said I was 'too bright' for a normal life.",
-            "So they gave me to the Mayor! Now I help the others... melt into place.",
-            "Want to see what happens when the Sun gets hungry?"
-        ],
-        barnaby: [
-            "Woof! I'm Barnaby! I used to be a boy named Sam.",
-            "The party at the well was so much fun... until the lid closed.",
-            "But look at me now! I'm soft, I'm fluffy, and I'll never be lonely again!",
-            "Check my collar... I think there's a note for you."
-        ],
-        giggles: [
-            "Hee-hee! Ready for a game? My name is Giggles!",
-            "I played hide-and-seek in the school basement with the big metal pipes.",
-            "It got so hot... my skin felt like it was sliding off like a costume!",
-            "The Mayor said my screams were the funniest thing he'd ever heard!"
-        ]
-    };
+        function initAudio() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Start creepy background drone
+            droneOsc = audioCtx.createOscillator();
+            droneGain = audioCtx.createGain();
+            droneOsc.type = 'sine';
+            droneOsc.frequency.setValueAtTime(55, audioCtx.currentTime); // Low sub bass
+            droneGain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            droneOsc.connect(droneGain);
+            droneGain.connect(audioCtx.destination);
+            droneOsc.start();
+        }
 
-    let counts = { sunny: 0, barnaby: 0, giggles: 0 };
+        // Kid's original playCreepyNote, refined
+        function playSfx(freq, type, duration, vol=0.1) {
+            if(!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
 
-    function talk(who) {
-        box.style.display = 'block';
-        box.innerText = scripts[who][counts[who]];
+        // --- GAME STATE ---
+        const recoveredLogs = new Set();
+        let isTyping = false;
         
-        if (counts[who] === scripts[who].length - 1) {
-            document.getElementById(who + '-invite').style.display = 'block';
+        // Extended Dialogue Scripts
+        const scripts = {
+            sunny: [
+                "Hi Jenna! I'm the leader! I make sure the Sun stays bright!",
+                "Did you know? My parents said I was 'too bright' for a normal life.",
+                "So they gave me to the Mayor! Now I help the others... melt.",
+                "Want to see what happens when the Sun gets hungry?"
+            ],
+            barnaby: [
+                "Woof! I'm Barnaby! I used to be a boy named Sam.",
+                "The party at the well was so much fun... until the lid closed.",
+                "But look at me now! I'm soft, I'm fluffy, and my bones are gone!",
+                "Check my collar... I think there's a note for you."
+            ],
+            giggles: [
+                "Hee-hee! Ready for a game? My name is Giggles!",
+                "I played hide-and-seek in the basement with the big metal pipes.",
+                "It got so hot... my skin slid off like a costume! So funny!",
+                "The Mayor recorded my screams. He uses them for the laugh track."
+            ]
+        };
+
+        const counts = { sunny: 0, barnaby: 0, giggles: 0 };
+
+        // --- CORE FUNCTIONS ---
+
+        function powerOn() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('game-container').style.display = 'flex';
+            initAudio();
+            playSfx(400, 'square', 0.5, 0.05); // TV turning on sound
         }
+
+        // Typewriter effect for dialogue box
+        function typeWriter(text, elementId, speed = 40, callback) {
+            if (isTyping) return;
+            isTyping = true;
+            const el = document.getElementById(elementId);
+            el.innerHTML = "";
+            let i = 0;
+            
+            function type() {
+                if (i < text.length) {
+                    el.innerHTML += text.charAt(i);
+                    // Play a tiny click sound for each letter
+                    if(i % 3 === 0) playSfx(800 + Math.random()*200, 'triangle', 0.05, 0.02);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    isTyping = false;
+                    if(callback) callback();
+                }
+            }
+            type();
+        }
+
+        function talk(who) {
+            if (isTyping) return;
+            
+            const dialogueArray = scripts[who];
+            const currentIndex = counts[who];
+            const line = dialogueArray[currentIndex];
+            
+            // Visual feedback
+            playSfx(200, 'square', 0.2);
+            document.getElementById(`icon-${who}`).classList.add('glitch-text');
+            setTimeout(() => document.getElementById(`icon-${who}`).classList.remove('glitch-text'), 300);
+
+            // Type the dialogue
+            typeWriter(`"${line}"`, 'speech-box', 40, () => {
+                // If it's the last line, show the secret button
+                if (currentIndex === dialogueArray.length - 1) {
+                    document.getElementById(`${who}-invite`).style.display = 'inline-block';
+                }
+            });
+
+            // Advance count, but cap it at the last line
+            if (counts[who] < dialogueArray.length - 1) {
+                counts[who]++;
+            }
+        }
+
+        function openSecret(who, event) {
+            event.stopPropagation(); // Prevent triggering talk() again
+            playSfx(100, 'sawtooth', 1.5, 0.2); // Creepy reveal sound
+            
+            const overlay = document.getElementById('secret-overlay');
+            const content = document.getElementById('secret-content');
+            
+            recoveredLogs.add(who);
+            corruptWebsite(); // Make the website look worse with every secret found
+
+            let html = "";
+            if (who === 'sunny') {
+                html = `
+                    <h2 class="glitch-text">ARCHIVE_14: THE MELTING RITUAL</h2>
+                    <p>> The 'Sunshine' is a high-frequency radiation array.</p>
+                    <p>> It is used to liquefy genetic material of 'Volunteers'.</p>
+                    <p>> Mascots are hollow synthetic shells. They are filled with the resulting 'Ink'.</p>
+                    <p style="color:red">> <strong>Jenna. Your skin is next. The Mayor needs a fresh coat.</strong></p>
+                `;
+            } else if (who === 'barnaby') {
+                html = `
+                    <h2 class="glitch-text">FILE: WELL_INCIDENT_1998</h2>
+                    <p>[TRANSCRIPT RECOVERED]</p>
+                    <p>MOTHER: "Sam, stop crying. The Mayor gave us a lot of money for this."</p>
+                    <p>SAM: "Please! It's dark in the well! I don't want to be a dog!"</p>
+                    <p>[SOUND OF HEAVY STONE SLIDING INTO PLACE]</p>
+                    <p>[LIQUEFACTION PROCESS INITIATED]</p>
+                `;
+            } else if (who === 'giggles') {
+                html = `
+                    <h2 class="glitch-text">FILE: BOILER_ROOM_2005</h2>
+                    <p>> Subject: Maya. Volunteered by father.</p>
+                    <p>> Method: Locked in 120-degree boiler room to 'burn away disobedience'.</p>
+                    <p>> Result: Vocal cords fused. Resulting shrill noises synthesized into Channel 7 laugh track.</p>
+                    <p style="color:red">> Listen to the background hum, Jenna. That is Maya.</p>
+                `;
+            }
+            
+            content.innerHTML = html;
+            overlay.style.display = 'flex';
+        }
+
+        function closeSecret() {
+            document.getElementById('secret-overlay').style.display = 'none';
+            playSfx(300, 'square', 0.2);
+            
+            // Check if phase 2 should start
+            if (recoveredLogs.size === 3) {
+                setTimeout(initiateTerminalPhase, 1000);
+            }
+        }
+
+        // Visually corrupt the happy site as secrets are found
+        function corruptWebsite() {
+            const header = document.getElementById('main-header');
+            const title = document.getElementById('header-title');
+            
+            if (recoveredLogs.size === 1) {
+                header.style.background = '#888';
+                title.innerText = "The S nsh ne Fr  nds";
+                droneOsc.frequency.setValueAtTime(65, audioCtx.currentTime); // Pitch up drone
+            } else if (recoveredLogs.size === 2) {
+                header.style.background = '#444';
+                document.body.style.backgroundColor = '#111';
+                title.classList.add('glitch-text');
+                title.innerText = "WE ARE WATCHING JENNA";
+                droneOsc.frequency.setValueAtTime(75, audioCtx.currentTime);
+            }
+        }
+
+        // --- PHASE 2 LOGIC ---
         
-        counts[who] = (counts[who] + 1) % scripts[who].length;
-    }
+        function initiateTerminalPhase() {
+            document.getElementById('game-container').style.display = 'none';
+            document.getElementById('terminal-phase').style.display = 'flex';
+            
+            // Change drone to an aggressive alarm state
+            droneOsc.type = 'sawtooth';
+            droneOsc.frequency.setValueAtTime(40, audioCtx.currentTime);
+            droneGain.gain.setValueAtTime(0.1, audioCtx.currentTime);
 
-    function openSecret(who) {
-        const overlay = document.getElementById('overlay');
-        const content = document.getElementById('overlay-content');
-        overlay.style.display = 'flex';
-        recovered.add(who);
-        logs.innerText = recovered.size;
+            const termOut = document.getElementById('term-out');
+            
+            const sequence = [
+                "SYSTEM FAILURE DETECTED...",
+                "FRONT-END MASKING PROTOCOL CORRUPTED.",
+                "INITIATING DIRECT CONNECTION TO: THE MAYOR.",
+                "...",
+                "<span class='terminal-red'>HELLO, JENNA.</span>",
+                "<span class='terminal-red'>YOU FOUND ALL THE FILES. CLEVER GIRL.</span>",
+                "<span class='terminal-red'>BUT YOU CANNOT UNPLUG A LIVE BROADCAST.</span>",
+                "<span class='terminal-red'>THE INK VAT IS READY. THE CAMERAS ARE ROLLING.</span>",
+                "AWAITING VOLUNTEER INPUT:"
+            ];
 
-        if (who === 'sunny') {
-            content.innerHTML = `
-                <h1>THE MELTING RITUAL</h1>
-                <div class="melt-sun"><div class="drip" style="left:40px"></div><div class="drip" style="left:90px; animation-delay:0.7s"></div></div>
-                <p>The Sunshine is actually a high-frequency radiation used to liquefy genetic material.</p>
-                <p>The "Mascots" are just hollow shells filled with the "Ink" of the children who came before.</p>
-                <p style="color:white">Jenna, your skin is next. The Mayor needs a fresh coat of paint.</p>
-            `;
-        } else if (who === 'barnaby') {
-            content.innerHTML = `
-                <h1>FILE: WELL_INCIDENT_1998</h1>
-                <p style="color:white">[GRAINY FOOTAGE OF A WELL]</p>
-                <p>"SAM, STOP CRYING. THE MAYOR SAYS THIS IS FOR YOUR OWN GOOD."</p>
-                <p>"PLEASE, MOM! IT'S DARK! I DON'T WANT TO BE A DOG!"</p>
-                <p>[SOUND OF HEAVY STONE SLIDING INTO PLACE]</p>
-            `;
-        } else if (who === 'giggles') {
-            content.innerHTML = `
-                <h1>FILE: BOILER_ROOM_2005</h1>
-                <p>Maya was "Volunteered" by her father after she wouldn't stop crying.</p>
-                <p>She was locked in the 120-degree boiler room to "dry out" her personality.</p>
-                <p>The resulting laughter was synthesized into the Channel 7 audio loop.</p>
-                <p style="color:white">Listen closely to the background music... that's Maya.</p>
-            `;
+            let delay = 0;
+            sequence.forEach((line, index) => {
+                setTimeout(() => {
+                    playSfx(150, 'square', 0.1);
+                    termOut.innerHTML += `<div class="terminal-line">${line}</div>`;
+                    termOut.scrollTop = termOut.scrollHeight;
+                    
+                    if (index === sequence.length - 1) {
+                        setTimeout(() => {
+                            document.getElementById('term-choices').style.display = 'flex';
+                        }, 1000);
+                    }
+                }, delay);
+                delay += 1200; // Time between lines
+            });
         }
-    }
 
-    function closeSecret() {
-        document.getElementById('overlay').style.display = 'none';
-        if (recovered.size === 3) {
-            alert("ALL FILES RECOVERED. WELCOME TO THE CAST, JENNA. THE TOUR IS NOW PERMANENT.");
+        // --- PHASE 3 LOGIC (ENDINGS) ---
+
+        function triggerEnding(choice) {
+            document.getElementById('terminal-phase').style.display = 'none';
+            document.getElementById('ending-screen').style.display = 'flex';
+            
+            // Stop drone, play harsh noise
+            droneGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.1);
+            playSfx(100, 'sawtooth', 3, 0.3);
+
+            const icon = document.getElementById('ending-icon');
+            const desc = document.getElementById('ending-desc');
+
+            if (choice === 'assimilate') {
+                icon.innerText = "💧";
+                desc.innerText = "CAUSE OF DISAPPEARANCE: WILLING ASSIMILATION.\n\nJenna is now the Black Ink used to lubricate the Channel 7 Broadcasting Antenna. The Mayor thanks her for her service.";
+            } else {
+                icon.innerText = "📺";
+                desc.innerText = "CAUSE OF DISAPPEARANCE: FAILED ESCAPE.\n\nJenna tried to shut off the studio. The Mayor reminded her that the doors lock from the outside. She has been permanently attached to Monitor #4.";
+            }
         }
-    }
-</script>
 
+        // Anti-escape mechanism (The kid had this, I polished it)
+        window.history.pushState(null, null, window.location.href);
+        window.onpopstate = function () {
+            window.history.go(1);
+            if (document.getElementById('game-container').style.display === 'flex') {
+                alert("SYSTEM: The Mayor locked the doors. There is no 'Back' button in the Studio.");
+            }
+        };
+
+    </script>
 </body>
 </html>
-</body>
-</html>
+2m
+
+Add an Emoji, Sticker, or GIF
+
